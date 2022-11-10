@@ -11,12 +11,18 @@ GREEN = (0,255,0)
 RED = (255,0,0)
 ORANGE = (255, 118, 59)
 random = (0,0,0)
+GREY = (125,124,124)
 box_color = random 
 
 all_sprites = pg.sprite.Group()
+enemy_group = pg.sprite.Group()
 
 karakter = player()
-all_sprites.add(karakter)
+enemy = Enemy()
+
+
+all_sprites.add(karakter, enemy)
+enemy_group.add(enemy)
 
 screen = pg.display.set_mode((1300,800))
 
@@ -31,9 +37,17 @@ while playing: # game loop
         if event.type == pg.QUIT:
             playing = False
     
-    screen.fill(ORANGE) # tegner bakgrunn
+    screen.fill(GREY) # tegner bakgrunn
 
     all_sprites.update() # kjør udsate funkjon til alle sprite i all_sprites
+    
+    hits = pg.sprite.spritecollide(karakter,enemy_group, True)
+
+    # lag nye fiender 
+    if len(enemy_group) < 1:
+        enemy = Enemy()
+        all_sprites.add(enemy)
+        enemy_group.add(enemy)
 
     # tegner alle sprites i gruppen all_sprites til screen
     all_sprites.draw(screen)
