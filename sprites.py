@@ -2,10 +2,15 @@ import pygame as pg
 from random import randint
 vec = pg.math.Vector2
 
-karakter_img = pg.image.load("karakter2.png")
+karakter_img = pg.image.load("karakter4stå.png")
 player_img = pg.transform.scale(karakter_img,(60,100)) # endre størelse på player image
 enemy_img = pg.image.load("bos2.png")
 enemy_img = pg.transform.scale(enemy_img,(300,300))
+
+STANDING = pg.image.load('')
+STANDING2 = pg.image.load('')
+STANDING3 = pg.image.load('')
+STANDING4 = pg.image.load('')
 
 
 class player(pg.sprite.Sprite):
@@ -16,6 +21,7 @@ class player(pg.sprite.Sprite):
         self.pos = vec(100,100)
         self.rect.center = self.pos
         self.speed = 7
+        self.liv = 5
 
 
     def update(self):
@@ -40,20 +46,22 @@ class Enemy(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.image = enemy_img
         self.rect = self.image.get_rect() # henter self.image sin størelse og
-        self.pos = vec(randint(0,1400),randint(0,800))
+        self.pos = vec(400,400)
         self.rect.center = self.pos
         self.speed = 10
+        self.direction_x = -5
+        self.direction_y = 1
 
 
     def update(self):
         self.rect.center = self.pos # flytter rect til player til ny posisjon
 
-        self.pos.x -= self.speed
+        self.pos.x += self.direction_x
+        self.pos.y += self.direction_y
+
 
         if self.pos.x < -100: # til venstre for skjermen
-            self.pos.x = 1500
-            self.pos.y = randint(0,900)
-
+           self.direction_x = randint(-1,10)
         
 
 

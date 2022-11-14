@@ -42,6 +42,14 @@ while playing: # game loop
     all_sprites.update() # kjør udsate funkjon til alle sprite i all_sprites
     
     hits = pg.sprite.spritecollide(karakter,enemy_group, True)
+    if hits: 
+        karakter.liv -= 1
+        print("LIV ",karakter.liv)
+        if karakter.liv <= 0:
+            karakter.kill()
+            karakter = player()
+            all_sprites.add()
+        
 
     # lag nye fiender 
     if len(enemy_group) < 1:
@@ -51,6 +59,14 @@ while playing: # game loop
 
     # tegner alle sprites i gruppen all_sprites til screen
     all_sprites.draw(screen)
+
+
+
+
+
+
+
+
 
     pg.display.update()
 
