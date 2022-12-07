@@ -14,6 +14,9 @@ random = (0,0,0)
 GREY = (125,124,124)
 box_color = random 
 
+WIDTH = 2000
+HEIGHT = 1200
+
 all_sprites = pg.sprite.Group()
 enemy_group = pg.sprite.Group()
 
@@ -24,12 +27,17 @@ enemy = Enemy()
 all_sprites.add(karakter, enemy)
 enemy_group.add(enemy)
 
-screen = pg.display.set_mode((1300,800))
+screen = pg.display.set_mode((WIDTH,HEIGHT))
+bg = pg.image.load("kart.png").convert_alpha()
+bg = pg.transform.scale(bg,(WIDTH,HEIGHT))
 
 fps_counter = 0
 
 FPS = 120
 clock = pg.time.Clock()
+
+
+
 playing = True
 while playing: # game loop
     clock.tick(FPS)
@@ -37,7 +45,8 @@ while playing: # game loop
         if event.type == pg.QUIT:
             playing = False
     
-    screen.fill(GREY) # tegner bakgrunn
+    screen.blit(bg,(0,0)) # tegner bakgrunn
+    
 
     all_sprites.update() # kjør udsate funkjon til alle sprite i all_sprites
     
