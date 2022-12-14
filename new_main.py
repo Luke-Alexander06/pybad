@@ -76,11 +76,22 @@ class game():
 
             # tegner alle sprites i gruppen all_sprites til screen
             
-
-            
             self.screen.blit(self.tekst_player_hp, (10, 10))
             self.all_sprites.draw(self.screen)
-            
+
+           
+           
+
+
+
+                #game over
+
+
+
+
+
+               
+                
             pg.display.update()
 
 
