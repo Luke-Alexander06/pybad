@@ -5,7 +5,7 @@ vec = pg.math.Vector2
 karakter_img = pg.image.load("karakter4stå.png")
 player_img = pg.transform.scale(karakter_img,(40,65)) # endre størelse på player image
 player_img_left = pg.transform.flip(player_img, True, False)
-enemy_img = pg.image.load("bos2.png")
+enemy_img = pg.image.load("boss1.png")
 enemy_img = pg.transform.scale(enemy_img,(150,150))
 
 STANDING = pg.image.load("karakter1stå.png")
@@ -30,6 +30,15 @@ RUNNING5 = pg.transform.scale(RUNNING5,(40,54))
 RUNNING6 = pg.image.load("karakter6løpe.png")
 RUNNING6 = pg.transform.scale(RUNNING6,(40,54))
 
+RUNNINGBOSS = pg.image.load("boss1.png")
+RUNNINGBOSS = pg.transform.scale(RUNNINGBOSS,(150,150))
+RUNNINGBOSS2 = pg.image.load("boss2.png")
+RUNNINGBOSS2 = pg.transform.scale(RUNNINGBOSS2,(150,150))
+RUNNINGBOSS3 = pg.image.load("boss3.png")
+RUNNINGBOSS3 = pg.transform.scale(RUNNINGBOSS3,(150,150))
+RUNNINGBOSS4 = pg.image.load("boss4.png")
+RUNNINGBOSS4 = pg.transform.scale(RUNNINGBOSS4,(150,150))
+
 class player(pg.sprite.Sprite):
     def __init__(self):
         pg.sprite.Sprite.__init__(self)
@@ -41,7 +50,6 @@ class player(pg.sprite.Sprite):
         self.liv = 5
         self.current_frame = 10
         self.last_update = 10
-
         self.standing = True
         self.running = False
         self.left = True
@@ -49,6 +57,7 @@ class player(pg.sprite.Sprite):
 
         self.standing_frames = [STANDING,STANDING2,STANDING3,STANDING4]
         self.running_frames = [RUNNING,RUNNING2,RUNNING3,RUNNING4,RUNNING5,RUNNING6]
+        
 
     def update(self):
         self.rect.center = self.pos # flytter rect til player til ny posisjon
@@ -143,7 +152,12 @@ class Enemy(pg.sprite.Sprite):
         self.speed = 1
         self.direction_x = 1
         self.direction_y = 1
+        self.current_frame = 10
+        self.last_update = 10
+        self.left = True
+        self.right = True 
 
+        self.bossrunning_frames = [RUNNINGBOSS,RUNNINGBOSS2,RUNNINGBOSS3,RUNNINGBOSS4]
 
     def update(self):
         self.rect.center = self.pos # flytter rect til player til ny posisjon
@@ -153,21 +167,33 @@ class Enemy(pg.sprite.Sprite):
 
 
         if self.pos.x < self.game.karakter.pos.x:
-            self.direction_x = 0
-            self.image = self.image_right
+            self.direction_x = 1
+            
             
         elif self.pos.x > self.game.karakter.pos.x:
-            self.direction_x = 0
-            self.image = self.image_left
-
+            self.direction_x = -1
+           
 
         if self.pos.y < self.game.karakter.pos.y:
-            self.direction_y = 0
+            self.direction_y = 1
 
         elif self.pos.y > self.game.karakter.pos.y:
-            self.direction_y = 0
-
+            self.direction_y = -1
  
         if self.pos.x < -100: # til venstre for skjermen
-                self.direction_x = randint(-1,10)
+            self.direction_x = randint(-1,10)
+
+
+        now = pg.time.get_ticks()
+
+        if now - self.last_update  > 100:
+            self.last_update = now
+            self.current_frame = (self.current_frame +1)% len(self.bossrunning_frames)
+            self.image = self.bossrunning_frames[self.current_frame]
+            self.rect = self.image.get_rect()
+            print("bossrunning animation")
+
+            if self.left:
+                self.image = pg.transform.flip(self.image, True, False)
+
 
